@@ -1,14 +1,14 @@
 import FishReference from '../models/FishReference.js';
 
 export const getAllFish = async () => {
-    return await FishReference.find({}).sort({ name: 1 });
+    return await FishReference.find({}).sort({ name: 1 }).lean();
 };
 
 export const getFishById = async (id) => {
     if (!id) throw new Error("Fish ID is required");
 
     try {
-        const fish = await FishReference.findById(id);
+        const fish = await FishReference.findById(id).lean();
 
         if (!fish) throw new Error("Fish not found");
         return fish;

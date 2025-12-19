@@ -1,0 +1,7 @@
+nohup: ignoring input
+
+> railway-app@1.0.0 start
+> node index.js
+
+Server berjalan di http://localhost:3000
+MongoDB Connected: cluster0-shard-00-00.mivax.mongodb.net
