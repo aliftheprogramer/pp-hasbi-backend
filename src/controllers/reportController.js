@@ -5,7 +5,8 @@ export const createReport = async (req, res) => {
         const { description, fishReferenceId, latitude, longitude, addressText } = req.body;
 
         // Handle file upload
-        const photoUrl = req.file ? `/uploads/${req.file.filename}` : null;
+        // Multer-storage-cloudinary places the URL in req.file.path
+        const photoUrl = req.file ? req.file.path : null;
         if (!photoUrl) {
             return res.status(400).json({ success: false, error: "Photo is required" });
         }
