@@ -10,7 +10,10 @@ import articleRoutes from './src/routes/articleRoutes.js';
 import fishRoutes from './src/routes/fishRoutes.js';
 import reportRoutes from './src/routes/reportRoutes.js';
 import adminRoutes from './src/routes/adminRoutes.js';
-import prisma from './src/prismaClient.js';
+import connectDB from './src/config/database.js';
+
+// Connect to Database
+connectDB();
 
 // --- BAGIAN KRUSIAL UNTUK MENDAPATKAN PATH DIREKTORI YANG BENAR ---
 // Ini diperlukan saat menggunakan ES Modules (import/export)
@@ -69,9 +72,6 @@ const signals = ['SIGINT', 'SIGTERM'];
 signals.forEach((signal) => {
   process.on(signal, async () => {
     console.log(`\n${signal} diterima, menutup server...`);
-    // Pastikan prisma diimpor dan digunakan dengan benar di sini jika $disconnect dipanggil
-    await prisma.$disconnect();
-    console.log('Koneksi Prisma ditutup.');
     process.exit(0);
   });
 });

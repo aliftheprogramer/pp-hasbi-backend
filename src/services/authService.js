@@ -1,4 +1,4 @@
-import prisma from '../prismaClient.js';
+import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import * as UserService from './userService.js';
 
@@ -14,9 +14,7 @@ export const loginService = async (email, password) => {
         throw error;
     }
 
-    const user = await prisma.user.findUnique({
-        where: { email },
-    });
+    const user = await User.findOne({ email });
 
     if (!user) {
         const error = new Error('Email atau password salah.');
@@ -31,7 +29,11 @@ export const loginService = async (email, password) => {
         throw error;
     }
 
-    // Remove password from returned object
-    const { password: _, ...userWithoutPassword } = user;
+    // Return user object without password
+    // Mongoose toObject/toJSON usually handles cleanup if configured, but explicit cleanup is safe.
+    // The model configuration sets virtuals: true for keys, but we need to ensure password is not sent if possible.
+    // Explicitly destructuring here.
+    const userObj = user.toObject();
+    const { password: _, ...userWithoutPassword } = userObj;
     return userWithoutPassword;
 };

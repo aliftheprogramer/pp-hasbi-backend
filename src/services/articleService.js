@@ -1,18 +1,21 @@
-import prisma from '../prismaClient.js';
+import Article from '../models/Article.js';
 
 export const getAllArticles = async () => {
-    return await prisma.article.findMany({
-        orderBy: { createdAt: 'desc' }
-    });
+    return await Article.find({}).sort({ createdAt: -1 });
 };
 
 export const getArticleById = async (id) => {
     if (!id) throw new Error("Article ID is required");
 
-    const article = await prisma.article.findUnique({
-        where: { id }
-    });
+    try {
+        const article = await Article.findById(id);
 
-    if (!article) throw new Error("Article not found");
-    return article;
+        if (!article) throw new Error("Article not found");
+        return article;
+    } catch (error) {
+        if (error.name === 'CastError') {
+            throw new Error("Article not found");
+        }
+        throw error;
+    }
 };

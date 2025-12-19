@@ -1,96 +1,78 @@
-import prisma from '../prismaClient.js';
+import Report from '../models/Report.js';
 
 export const createReport = async (data) => {
-    return await prisma.report.create({
-        data: {
-            userId: data.userId,
-            fishReferenceId: data.fishReferenceId || null,
-            description: data.description,
-            photoUrl: data.photoUrl,
-            latitude: parseFloat(data.latitude),
-            longitude: parseFloat(data.longitude),
-            addressText: data.addressText,
-            status: 'PENDING'
-        }
+    const report = new Report({
+        userId: data.userId,
+        fishReferenceId: data.fishReferenceId || null,
+        description: data.description,
+        photoUrl: data.photoUrl,
+        latitude: parseFloat(data.latitude),
+        longitude: parseFloat(data.longitude),
+        addressText: data.addressText,
+        status: 'PENDING'
     });
+    return await report.save();
 };
 
 export const getReportsByUserId = async (userId) => {
-    return await prisma.report.findMany({
-        where: { userId },
-        include: { fishReference: true },
-        orderBy: { createdAt: 'desc' }
-    });
+    return await Report.find({ userId })
+        .populate('fishReference')
+        .sort({ createdAt: -1 });
 };
 
 export const getApprovedReports = async () => {
-    return await prisma.report.findMany({
-        where: { status: 'APPROVED' },
-        include: {
-            fishReference: true,
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    avatarUrl: true
-                }
-            }
-        },
-        orderBy: { createdAt: 'desc' }
-    });
+    return await Report.find({ status: 'APPROVED' })
+        .populate('fishReference')
+        .populate({
+            path: 'user',
+            select: 'id name avatarUrl' // Select specific fields from populate
+        })
+        .sort({ createdAt: -1 });
 };
 
 export const getAllReports = async (filters = {}) => {
-    return await prisma.report.findMany({
-        where: filters.where,
-        include: {
-            fishReference: true,
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    avatarUrl: true
-                }
-            }
-        },
-        orderBy: { createdAt: 'desc' }
-    });
+    const query = filters.where || {};
+    return await Report.find(query)
+        .populate('fishReference')
+        .populate({
+            path: 'user',
+            select: 'id name email avatarUrl'
+        })
+        .sort({ createdAt: -1 });
 };
 
 export const getReportById = async (reportId) => {
-    const report = await prisma.report.findUnique({
-        where: { id: reportId },
-        include: {
-            fishReference: true,
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    avatarUrl: true
-                }
-            }
+    try {
+        const report = await Report.findById(reportId)
+            .populate('fishReference')
+            .populate({
+                path: 'user',
+                select: 'id name email avatarUrl'
+            });
+
+        if (!report) {
+            throw new Error('Report not found');
         }
-    });
 
-    if (!report) {
-        throw new Error('Report not found');
+        return report;
+    } catch (error) {
+        if (error.name === 'CastError') {
+            throw new Error('Report not found');
+        }
+        throw error;
     }
-
-    return report;
 };
 
 export const updateReport = async (reportId, updateData) => {
-    return await prisma.report.update({
-        where: { id: reportId },
-        data: updateData,
-        include: { fishReference: true }
-    });
+    try {
+        const report = await Report.findByIdAndUpdate(reportId, updateData, { new: true })
+            .populate('fishReference');
+        return report;
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const deleteReport = async (reportId) => {
-    return await prisma.report.delete({
-        where: { id: reportId }
-    });
+    return await Report.findByIdAndDelete(reportId);
 };
