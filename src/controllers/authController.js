@@ -14,6 +14,14 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
+    // DEBUGGING: Log received payload
+    console.log('Login Attempt:', {
+        email,
+        passwordRecieved: !!password,
+        contentType: req.headers['content-type'],
+        bodyRaw: req.body
+    });
+
     try {
         const user = await AuthService.loginService(email, password);
 
