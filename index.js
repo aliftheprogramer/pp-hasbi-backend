@@ -31,7 +31,18 @@ app.use((req, res, next) => {
 });
 
 // Middleware CORS - Allow all origins
-app.use(cors());
+
+// Middleware CORS - Allow all origins specially for Vercel and local dev
+app.use(cors({
+  origin: true, // Berarti allow semua origin, bisa diganti array string domain frontend
+  credentials: true, // Izinkan cookie / header otorisasi
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}));
+
+// Handle Preflight Requests explicitly
+app.options('*', cors());
+
 
 // Middleware untuk parsing JSON dan URL-encoded data
 app.use(express.json());
