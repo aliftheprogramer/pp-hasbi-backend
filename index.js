@@ -75,3 +75,5 @@ signals.forEach((signal) => {
     process.exit(0);
   });
 });
+
+export default app;
