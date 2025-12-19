@@ -4,7 +4,9 @@ import * as UserService from './userService.js';
 
 export const registerService = async (userData) => {
     // Reuse existing user creation logic
-    return await UserService.createUserService(userData);
+    // Force role to be USER for public registration
+    const safeUserData = { ...userData, role: 'USER' };
+    return await UserService.createUserService(safeUserData);
 };
 
 export const loginService = async (email, password) => {
