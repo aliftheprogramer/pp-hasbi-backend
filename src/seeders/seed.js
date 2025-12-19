@@ -62,32 +62,72 @@ const seedData = async () => {
 
         // Upload Fish Images
         // Using local images from image/UI PUI
-        // Note: Paths are relative to CWD (project root) when running via npm run seed
-        const lionfishImg = await uploadToCloudinary('./image/UI PUI/Asset 1.png', 'lionfish');
-        const stonefishImg = await uploadToCloudinary('./image/UI PUI/Asset 2.png', 'stonefish');
-        const clownfishImg = await uploadToCloudinary('./image/UI PUI/Asset 3.png', 'clownfish');
+        // Mapped to Native Indonesian River Fish
+        const tomanImg = await uploadToCloudinary('./image/UI PUI/Asset 1.png', 'toman');
+        const buntalImg = await uploadToCloudinary('./image/UI PUI/Asset 2.png', 'buntal_tawar');
+        const pariImg = await uploadToCloudinary('./image/UI PUI/Asset 3.png', 'pari_sungai');
+        const baungImg = await uploadToCloudinary('./image/UI PUI/Asset 4.png', 'baung');
+        const sembilangImg = await uploadToCloudinary('./image/UI PUI/Asset 5.png', 'sembilang');
+        const tapahImg = await uploadToCloudinary('./image/UI PUI/Asset 6.png', 'tapah');
+        const bagariusImg = await uploadToCloudinary('./image/UI PUI/Asset 7.png', 'bagarius');
+        const hampalaImg = await uploadToCloudinary('./image/UI PUI/Asset 8.png', 'hampala');
 
         // SEED FISH REFERENCES
         const fishRefs = await FishReference.insertMany([
             {
-                name: 'Lionfish',
-                scientificName: 'Pterois',
-                description: 'Lionfish are venomous marine fish in the genus Pterois.',
-                imageUrl: lionfishImg,
+                name: 'Ikan Toman',
+                scientificName: 'Channa micropeltes',
+                description: 'Ikan Toman adalah spesies gabus raksasa yang agresif. Memiliki gigi tajam dan rahang kuat, dikenal galak saat menjaga anak-anaknya.',
+                imageUrl: tomanImg,
                 dangerLevel: 'HIGH'
             },
             {
-                name: 'Stonefish',
-                scientificName: 'Synanceia',
-                description: 'Stonefish are venomous, dangerous, and fatal to humans.',
-                imageUrl: stonefishImg,
+                name: 'Ikan Buntal Air Tawar',
+                scientificName: 'Pao / Tetraodon',
+                description: 'Buntal air tawar di Indonesia (seperti Buntal Pisang) mengandung racun mematikan (tetrodotoxin) di organ dalamnya. Jangan dikonsumsi sembarangan.',
+                imageUrl: buntalImg,
                 dangerLevel: 'HIGH'
             },
             {
-                name: 'Clownfish',
-                scientificName: 'Amphiprioninae',
-                description: 'Clownfish are small, brightly colored fish.',
-                imageUrl: clownfishImg,
+                name: 'Ikan Sapu-Sapu',
+                scientificName: 'Urogymnus polylepis / Himantura',
+                description: 'Ditemukan di sungai besar Kalimantan dan Sumatera. Memiliki duri berbisa di pangkal ekor yang dapat menyebabkan luka fatal.',
+                imageUrl: pariImg,
+                dangerLevel: 'HIGH'
+            },
+            {
+                name: 'Ikan Baung',
+                scientificName: 'Hemibagrus',
+                description: 'Ikan Baung memiliki patil (duri sirip) yang beracun. Sengatannya menyebabkan bengkak, nyeri hebat, dan demam.',
+                imageUrl: baungImg,
+                dangerLevel: 'MEDIUM'
+            },
+            {
+                name: 'Ikan Sembilang',
+                scientificName: 'Plotosus canius',
+                description: 'Sering ditemukan di muara sungai. Patilnya memiliki racun yang sangat kuat dan menyakitkan, bahkan bisa berbahaya bagi jantung.',
+                imageUrl: sembilangImg,
+                dangerLevel: 'HIGH'
+            },
+            {
+                name: 'Ikan Tapah',
+                scientificName: 'Wallago leeri',
+                description: 'Ikan Tapah adalah "monster sungai" asli Indonesia. Dapat tumbuh sangat besar dan merupakan predator rakus dengan mulut lebar.',
+                imageUrl: tapahImg,
+                dangerLevel: 'MEDIUM'
+            },
+            {
+                name: 'Ikan Bagarius (Devil Catfish)',
+                scientificName: 'Bagarius yarelli',
+                description: 'Dikenal sebagai lele setan, ditemukan di Sungai Musi. Memiliki gigi tajam yang tidak biasa untuk jenis lele dan sifat predator agresif.',
+                imageUrl: bagariusImg,
+                dangerLevel: 'HIGH'
+            },
+            {
+                name: 'Ikan Hampala (Sebarau)',
+                scientificName: 'Hampala macrolepidota',
+                description: 'Predator air tawar yang berenang cepat. Memiliki tarikan kuat dan gigi tajam, sering menjadi target pemancing namun agresif.',
+                imageUrl: hampalaImg,
                 dangerLevel: 'LOW'
             }
         ]);
@@ -95,32 +135,32 @@ const seedData = async () => {
 
         // SEED ARTICLES
         await Article.create({
-            title: 'Beware of Lionfish',
-            content: 'Lionfish are invasive and dangerous. Do not touch them.',
-            thumbnailUrl: lionfishImg, // Reuse upload
-            sourceUrl: 'https://en.wikipedia.org/wiki/Pterois'
+            title: 'Waspada Ikan Sapu - Sapu',
+            content: 'Ikan Sapu - Sapu sering bersembunyi di dasar sungai berlumpur. Tertusuk duri ekornya bisa berakibat fatal. Selalu berhati-hati saat berjalan di sungai keruh.',
+            thumbnailUrl: pariImg, // Reuse upload
+            sourceUrl: 'https://id.wikipedia.org/wiki/Pari_sungai_raksasa'
         });
         console.log('Articles seeded');
 
         // SEED REPORTS
         await Report.create({
             userId: user._id,
-            fishReferenceId: fishRefs[0]._id, // Lionfish
-            description: 'I saw a lionfish near the shore!',
-            photoUrl: lionfishImg, // Reuse upload
-            latitude: -6.200000,
-            longitude: 106.816666,
-            addressText: 'Jakarta, Indonesia',
+            fishReferenceId: fishRefs[0]._id, // Toman
+            description: 'Induk Toman menyerang perahu nelayan di rawa.',
+            photoUrl: tomanImg, // Reuse upload
+            latitude: -0.026330,
+            longitude: 109.342504,
+            addressText: 'Sungai Kapuas, Pontianak',
             status: 'PENDING'
         });
         await Report.create({
             userId: user._id,
-            fishReferenceId: fishRefs[1]._id, // Stonefish
-            description: 'Dangerous stonefish spotted.',
-            photoUrl: stonefishImg, // Reuse upload
-            latitude: -8.409518,
-            longitude: 115.188919,
-            addressText: 'Bali, Indonesia',
+            fishReferenceId: fishRefs[2]._id, // Sapu - Sapu
+            description: 'Nelayan tidak sengaja menginjak Sapu - Sapu besar.',
+            photoUrl: pariImg, // Reuse upload
+            latitude: -2.990934,
+            longitude: 104.756554,
+            addressText: 'Sungai Musi, Palembang',
             status: 'APPROVED'
         });
         console.log('Reports seeded');

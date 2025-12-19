@@ -3,5 +3,16 @@ nohup: ignoring input
 > railway-app@1.0.0 start
 > node index.js
 
+--- CLOUDINARY CONFIG DEBUG ---
+CWD: /home/alif/MyProject/bhasbi/backend-pui
+CLOUD_NAME: dp4cmgw8n
+API_KEY: ******
+-------------------------------
 Server berjalan di http://localhost:3000
-MongoDB Connected: cluster0-shard-00-00.mivax.mongodb.net
+MongoDB Connected: cluster0-shard-00-02.mivax.mongodb.net
+2025-12-19T19:44:18.136Z - POST /api/reports
+2025-12-19T19:44:22.217Z - POST /api/auth/login
+Controller Error - login: Email atau password salah.
+2025-12-19T19:44:28.029Z - POST /api/auth/register
+2025-12-19T19:44:30.762Z - POST /api/auth/login
+2025-12-19T19:44:42.644Z - POST /api/reports
