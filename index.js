@@ -41,7 +41,7 @@ app.use(cors({
 }));
 
 // Handle Preflight Requests explicitly
-app.options('*', cors());
+app.options(/.*/, cors());
 
 
 // Middleware untuk parsing JSON dan URL-encoded data
