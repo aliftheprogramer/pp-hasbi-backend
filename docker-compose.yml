@@ -2,23 +2,12 @@ version: '3.8'
 
 services:
   app:
-    # Build image dari Dockerfile di folder ini
+    # 1. Build image dari folder ini
     build: .
 
-    # Gantikan -p 3000:3000
+    # 2. Nama container biar gampang dicari (opsional)
+    container_name: backend-ikan-app
+
+    # 3. Port biasanya sama (3000)
     ports:
       - "3000:3000"
-
-    # Gantikan -v (Volume Mounting)
-    # Ini membuat codingan di Lubuntu kamu 'mirroring' ke dalam container
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules # Trik penting! (baca penjelasan di bawah)
-
-    # Gantikan -e (Environment Variables)
-    # Dia akan otomatis baca file .env kamu
-    env_file:
-      - .env
-
-    # Gantikan CMD default. Kita pakai 'dev' biar ada nodemon
-    command: npm run dev

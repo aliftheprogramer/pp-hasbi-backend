@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    # 1. Set mode development
+    environment:
+      - NODE_ENV=development
+
+    # 2. Baca file .env lokal kamu
+    env_file:
+      - .env
+
+    # 3. Mounting folder (Codingan lokal -> Container)
+    #    Biar kalau di-save, langsung ngefek tanpa rebuild
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+    # 4. Pakai command dev (nodemon)
+    command: npm run dev

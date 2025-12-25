@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    # 1. Set mode production (Penting buat Express biar lebih cepat)
+    environment:
+      - NODE_ENV=production
+
+    # 2. Kalau error/crash, otomatis restart sendiri
+    env_file:
+      - .env
+    restart: always
+
+    # 3. Pakai command start biasa (node index.js)
+    command: npm start
